@@ -3723,6 +3723,8 @@ static const struct x86_cpu_id intel_epp_default[] = {
 		      179, 64, 16)),
 	X86_MATCH_VFM(INTEL_ARROWLAKE, HWP_SET_EPP_VALUES(HWP_EPP_POWERSAVE,
 		      179, 64, 16)),
+	X86_MATCH_VFM(INTEL_LUNARLAKE_M, HWP_SET_EPP_VALUES(HWP_EPP_POWERSAVE,
+		      179, 32, HWP_EPP_PERFORMANCE)),
 	{}
 };
 

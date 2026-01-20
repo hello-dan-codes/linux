@@ -49,6 +49,11 @@ static const struct thermal_cooling_device_ops tcc_cooling_ops = {
 	.set_cur_state = tcc_set_cur_state,
 };
 
+static int tcc_offset_default = -1;
+module_param(tcc_offset_default, int, 0644);
+MODULE_PARM_DESC(tcc_offset_default,
+	"Set TCC offset (deg C) at init; -1 keeps firmware default.");
+
 static const struct x86_cpu_id tcc_ids[] __initconst = {
 	X86_MATCH_VFM(INTEL_SKYLAKE, NULL),
 	X86_MATCH_VFM(INTEL_SKYLAKE_L, NULL),
@@ -65,6 +70,8 @@ static const struct x86_cpu_id tcc_ids[] __initconst = {
 	X86_MATCH_VFM(INTEL_RAPTORLAKE, NULL),
 	X86_MATCH_VFM(INTEL_RAPTORLAKE_P, NULL),
 	X86_MATCH_VFM(INTEL_RAPTORLAKE_S, NULL),
+	X86_MATCH_VFM(INTEL_METEORLAKE_L, NULL),
+	X86_MATCH_VFM(INTEL_LUNARLAKE_M, NULL),
 	{}
 };
 
@@ -106,6 +113,13 @@ static int __init tcc_cooling_init(void)
 	if (IS_ERR(tcc_cdev)) {
 		ret = PTR_ERR(tcc_cdev);
 		return ret;
+	}
+
+	if (tcc_offset_default >= 0) {
+		ret = intel_tcc_set_offset(-1, tcc_offset_default);
+		if (ret)
+			pr_warn("Failed to set TCC offset %d: %d\n",
+				 tcc_offset_default, ret);
 	}
 	return 0;
 }
