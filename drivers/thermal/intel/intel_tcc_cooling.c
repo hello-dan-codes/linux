@@ -49,10 +49,7 @@ static const struct thermal_cooling_device_ops tcc_cooling_ops = {
 	.set_cur_state = tcc_set_cur_state,
 };
 
-static int tcc_offset_default = -1;
-module_param(tcc_offset_default, int, 0644);
-MODULE_PARM_DESC(tcc_offset_default,
-	"Set TCC offset (deg C) at init; -1 keeps firmware default.");
+static const int tcc_offset_default = 10;
 
 static const struct x86_cpu_id tcc_ids[] __initconst = {
 	X86_MATCH_VFM(INTEL_SKYLAKE, NULL),
